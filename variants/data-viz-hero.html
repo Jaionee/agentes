@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALLMA SEO - Data Visualization Hero</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            background: #0f0f0f;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .hero-container {
+            min-height: 100vh;
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero-content {
+            padding: 3rem;
+            z-index: 2;
+        }
+
+        .terminal-header {
+            background: rgba(0, 0, 0, 0.9);
+            border-radius: 8px 8px 0 0;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 0;
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-dot.red { background: #ff5f56; }
+        .terminal-dot.yellow { background: #ffbd2e; }
+        .terminal-dot.green { background: #27ca3f; }
+
+        .terminal-title {
+            margin-left: auto;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .terminal-body {
+            background: rgba(0, 0, 0, 0.95);
+            border-radius: 0 0 8px 8px;
+            padding: 2rem;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .command-line {
+            color: #27ca3f;
+            margin-bottom: 1rem;
+        }
+
+        .output-line {
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight {
+            color: #feca57;
+            font-weight: bold;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            color: #000000;
+            text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.8);
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: rgba(0, 0, 0, 0.8);
+            margin-bottom: 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem;
+            border-radius: 4px;
+            border-left: 4px solid #000000;
+        }
+
+        .cta-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .cta-primary {
+            padding: 16px 32px;
+            background: #000000;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-primary:hover::before {
+            left: 100%;
+        }
+
+        .cta-secondary {
+            padding: 16px 32px;
+            background: transparent;
+            border: 2px solid #000000;
+            color: #000000;
+            border-radius: 4px;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-secondary:hover {
+            background: #000000;
+            color: #ffffff;
+        }
+
+        .dashboard-container {
+            padding: 3rem;
+            position: relative;
+        }
+
+        .dashboard {
+            background: rgba(0, 0, 0, 0.9);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dashboard-title {
+            font-size: 1.2rem;
+            color: #feca57;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #27ca3f;
+            font-size: 0.9rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #27ca3f;
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .metrics-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border-left: 4px solid;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card.ai-visibility {
+            border-left-color: #ff6b6b;
+        }
+
+        .metric-card.creation-time {
+            border-left-color: #feca57;
+        }
+
+        .metric-card.cited-content {
+            border-left-color: #27ca3f;
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: #aaaaaa;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .metric-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: currentColor;
+            animation: progressFill 2s ease-out forwards;
+        }
+
+        @keyframes progressFill {
+            from { width: 0; }
+        }
+
+        .metric-card.ai-visibility .metric-progress {
+            width: 75%;
+            background: #ff6b6b;
+        }
+
+        .metric-card.creation-time .metric-progress {
+            width: 60%;
+            background: #feca57;
+        }
+
+        .metric-card.cited-content .metric-progress {
+            width: 90%;
+            background: #27ca3f;
+        }
+
+        .chart-container {
+            height: 200px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-bars {
+            display: flex;
+            align-items: end;
+            height: 100%;
+            gap: 8px;
+            padding: 1rem 0;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: linear-gradient(to top, #ff6b6b, #feca57);
+            border-radius: 2px 2px 0 0;
+            animation: barGrow 2s ease-out forwards;
+            transform-origin: bottom;
+        }
+
+        @keyframes barGrow {
+            from { transform: scaleY(0); }
+            to { transform: scaleY(1); }
+        }
+
+        .chart-bar:nth-child(1) { height: 60%; animation-delay: 0.2s; }
+        .chart-bar:nth-child(2) { height: 85%; animation-delay: 0.4s; }
+        .chart-bar:nth-child(3) { height: 45%; animation-delay: 0.6s; }
+        .chart-bar:nth-child(4) { height: 95%; animation-delay: 0.8s; }
+        .chart-bar:nth-child(5) { height: 70%; animation-delay: 1.0s; }
+
+        @media (max-width: 1024px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+            
+            .hero-content, .dashboard-container {
+                padding: 2rem;
+            }
+            
+            .metrics-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-container">
+        <div class="hero-content">
+            <div class="terminal-header">
+                <div class="terminal-dot red"></div>
+                <div class="terminal-dot yellow"></div>
+                <div class="terminal-dot green"></div>
+                <div class="terminal-title">allma-seo-optimizer</div>
+            </div>
+            <div class="terminal-body">
+                <div class="command-line">$ allma optimize --target=ai-engines</div>
+                <div class="output-line">Inicializando LEO Engine...</div>
+                <div class="output-line">Analizando contenido actual...</div>
+                <div class="output-line">Optimización completada: <span class="highlight">+45% visibilidad IA</span></div>
+                <div class="command-line">$ allma status</div>
+                <div class="output-line">Status: <span class="highlight">ONLINE</span></div>
+                <div class="output-line">Tiempo creación: <span class="highlight">-30% optimizado</span></div>
+            </div>
+
+            <h1 class="hero-title">
+                Optimiza contenido para<br>
+                <strong>motores IA</strong>
+            </h1>
+            
+            <p class="hero-subtitle">
+                // Crea contenido que destaque tanto en búsquedas tradicionales 
+                // como en respuestas de IA con nuestra suite LEO 
+                // (LLM Engine Optimization).
+            </p>
+            
+            <div class="cta-container">
+                <a href="#" class="cta-primary">Ejecutar demo()</a>
+                <a href="#" class="cta-secondary">Leer docs</a>
+            </div>
+        </div>
+
+        <div class="dashboard-container">
+            <div class="dashboard">
+                <div class="dashboard-header">
+                    <h3 class="dashboard-title">SEO Analytics Dashboard</h3>
+                    <div class="status-indicator">
+                        <div class="status-dot"></div>
+                        <span>Live</span>
+                    </div>
+                </div>
+
+                <div class="metrics-container">
+                    <div class="metric-card ai-visibility">
+                        <div class="metric-value">+20%</div>
+                        <div class="metric-label">AI Visibility</div>
+                        <div class="metric-progress"></div>
+                    </div>
+                    <div class="metric-card creation-time">
+                        <div class="metric-value">-30%</div>
+                        <div class="metric-label">Creation Time</div>
+                        <div class="metric-progress"></div>
+                    </div>
+                    <div class="metric-card cited-content">
+                        <div class="metric-value">+45%</div>
+                        <div class="metric-label">Cited Content</div>
+                        <div class="metric-progress"></div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-bars">
+                        <div class="chart-bar"></div>
+                        <div class="chart-bar"></div>
+                        <div class="chart-bar"></div>
+                        <div class="chart-bar"></div>
+                        <div class="chart-bar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
